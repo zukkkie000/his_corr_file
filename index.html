@@ -103,7 +103,10 @@
         }
 
         #answer {
-            min-height: 60px;
+            padding-bottom: 50px;
+            min-height: 150px;
+            text-align: center;
+            text-justify: center;
             color: rgb(0, 255, 34);
             transition: opacity 0.5s ease;
             font-size: 1.3rem;
@@ -149,17 +152,20 @@
 
         @media (max-width: 600px) {
             body {
-                padding: 15px;
-                gap: 20px;
+                padding: 20px 15px;
+                gap: 10px;
                 justify-content: center;
+                align-items: center;
+                display: flex;
             }
 
             .text-begin {
                 padding: 12px 4px;
+                margin: 0;
             }
 
             .text-begin h1 {
-                padding: 20px 0;
+                padding: 10px 0 25px;
                 white-space: wrap;
                 font-size: clamp(1.3rem, 6vw, 2rem);
             }
@@ -195,7 +201,7 @@
 <body>
 
     <section class="text-begin">
-        <h1>СОЕДИНЕНИЕ УСПЕШНО</h1>
+        <h1>СОЕДИНЕНИЕ<br>УСПЕШНО</h1>
         <p>ВОЗМОЖНО, У ТЕБЯ МНОГО ВОПРОСОВ</p>
         <p>ИНТЕРЕСНО, ЧТО ИЛИ КТО ТЕБЯ ИНТЕРЕСУЕТ</p>
     </section>
