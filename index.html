@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connection</title>
+
+    <style>
+
+        html {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        @font-face {
+            font-family: "GastonFont";
+            src: url('fonts/JF-Dot-Shinonome-14-Regular.woff') format(woff);
+            font-display: swap;
+        
+        }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url("https://i.redd.it/5rdhawl1tfbh1.gif");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            color: rgb(253, 253, 253);
+            font-family: 'GastonFont';
+            min-height: 100vh;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        input {
+            background-color: black;
+            border-radius: none;
+            border-color: rgb(252, 253, 252);
+            text-align: center;
+            color: rgb(237, 241, 237);
+            width: 100%;
+            min-width: 35vh;
+            height: 5vh;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: rgb(0, 252, 13);
+        }
+
+        .text-begin {
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            margin: auto 0;
+            
+        }
+
+        .text-begin h1{
+            text-align: center;
+            padding: auto;
+            padding-bottom: 15vh;
+            font-size: 2vw;
+            white-space: nowrap;
+        }    
+        
+        .user {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            max-width: 400px;
+        }
+
+        #ansButton {
+            background: none;
+            color: rgb(255, 255, 255);
+            font-family: 'GastonFont';
+            font-weight: bold;
+            border: 3px solid white;
+            padding: 15px;
+            border-radius: none;
+            display: flex;
+        }
+
+        #ansButton img {
+            width: 16px;
+            object-fit: contain;
+        }
+
+        .hidden {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #answer {
+            min-height: 60px;
+            color: rgb(0, 255, 34);
+            transition: opacity 0.5s ease;
+            font-size: 1.3rem;
+            white-space: pre-line;
+        }
+
+
+
+
+
+
+
+
+
+
+        #screamer {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            background: black;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #screamer img {
+            width: 30%;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+                gap: 20px;
+                justify-content: center;
+            }
+
+            .text-begin {
+                padding: 12px 4px;
+            }
+
+            .text-begin h1 {
+                padding: 20px 0;
+                white-space: wrap;
+                font-size: clamp(1.3rem, 6vw, 2rem);
+            }
+
+            .text-begin p {
+                font-size: 0.9rem;
+            }
+
+            #answer {
+                font-size: 1.1rem;
+                padding: 8px 4px;
+            }
+
+            .user {
+                gap: 12px;
+            }
+
+            #ansButton {
+                font-size: 1rem;
+            }
+
+            #screamer img {
+                width: 80%;
+            }
+
+
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+    <section class="text-begin">
+        <h1>СОЕДИНЕНИЕ УСПЕШНО</h1>
+        <p>ВОЗМОЖНО, У ТЕБЯ МНОГО ВОПРОСОВ</p>
+        <p>ИНТЕРЕСНО, ЧТО ИЛИ КТО ТЕБЯ ИНТЕРЕСУЕТ</p>
+    </section>
+
+    <section id="answer">
+        ...
+    </section>
+
+    <section class="user">
+        <input id="question" type="text" placeholder="..." autocomplete="off">
+        <button id="ansButton">
+            <img src="media/heart.png">
+            Спросить
+        </button>
+    </section>
+
+
+
+
+
+
+    <div id="screamer">
+        <img src="" alt="">
+    </div>
+
+
+
+    <script>
+
+        const backgroundMusic = new Audio('media/ANOTHER-HIM.m4a');
+        backgroundMusic.loop = true;
+
+        document.addEventListener('click', ()=> {
+            backgroundMusic.play();
+
+        }, { once: true});
+
+        
+        let stage = 0;
+
+        const screamers = [
+            {
+                words: ['гастер', 'gaster'],
+                image: "media/gaston happy.jpg",
+                sound: "media/gast.mp3",
+                duration: 5000
+            },
+
+            {
+                words: ['гастон'],
+                image: "media/gaston sad.png",
+                sound: "media/gastnothappy.mp3",
+                duration: 5000
+            },
+        ]
+
+
+
+        const responces = {
+
+            identity: [
+                "Я ТОТ, \nКТО СТЁР СВОЁ ЖЕ ИМЯ",
+                "НАБЛЮДАТЕЛЬ",
+                "ТОТ, ЧЬЕ ИМЯ\n РАЗДРОБЛЕНО\n ВО ВРЕМЕНИ И\n ПРОСТРАНСТВЕ. "
+        ],
+
+        location: [
+            "ТЕМНО И ЕЩЁ ТЕМНЕЕ",
+            "ВСЮДУ\n И НИГДЕ\n ОДНОВРЕМЕННО.",
+            "ОТЯГОЩАЮЩЕ."
+        ],
+
+        death: [
+            "БЫТЬ\n\n ИЛИ НЕ БЫТЬ,\n\n ВОТ В ЧЁМ ВОПРОС",
+            "ВОЗМОЖНО\n\n ВЫ ЛИШЬ ВИДИТЕ\n\n НОЧНОЙ КОШМАР БОЛЬНОГО РАЗУМА",
+        ],
+
+        sideb: [
+            "НЕУДАЧНЫЙ ИСХОД"
+        ],
+
+        dohodiaga: [
+            "ВАШИ ПОПЫТКИ ОБУЗДАТЬ МОЮ СУТЬ\n\n СТОЛЬ СМЕШНЫ\n\n И СТОЛЬ ЖЕ ПЕЧАЛЬНЫ"
+        ],
+
+        nuc: [
+            "ОТРИЦАТЕЛЬНЫЕ ФОТОНЫ\n\n ЗАТМЯТ ЖАР ТЫСЯЧИ СОЛЦН",
+            "В ПЯТЬ ЧАСОВ\n ПОПОЛУДНИ. "
+        ],
+
+        gas_exist: [
+            "Я МЫСЛЮ,\n СЛЕДОВАТЕЛЬНО,\n СУЩЕСТВУЮ. "
+        ],
+
+        we_exist: [
+            "ВЫ МЫСЛИТЕ?\n ВРЯД ЛИ."
+        ],
+
+        smile: [
+            "*вы чувствуете, как грехи ползут по вашей спине*"
+        ],
+
+        forgotten: [
+            "ПРОБЛЕМА"
+        ],
+
+
+
+
+
+
+
+        /*chars answers*/
+    
+        queen: [
+            "ПОВЫСЬТЕ\n ЗНАЧЕНИЕ ВЕСЕЛЬЯ\n ВАШЕ ВЫСОЧЕСТВО"
+        ],
+        tenna: [
+            "УСТАРЕВШИЙ"
+        ],
+        ralsei: [
+            "ОБРЕЧЕННЫЙ"
+        ],
+        asriel: [
+            "ЦВЕТОЧНЫЙ ПРИНЦ\n ЖЕЛАЮЩИЙ ВЕРНУТЬ ВСЕ\n ВСПЯТЬ \n\nМЫ ТАК ПОХОЖИ, ДИТЯ"
+        ],
+        paps: [
+            "НЕЗАБЫВАЕМЫЙ"
+        ],
+        sans: [
+            "НЕ ЗАБЫВАЙ"
+        ],
+        gerson: [
+            "ЗРЯ СТАРАЕШЬСЯ ИЗМЕНИТЬ\n ПРОРОЧЕСТВО "
+        ],
+        sammi: [
+            "МНЕ ЖАЛЬ "
+        ],
+        king: [
+            "ВЕРЕН НЕ ТОМУ"
+        ],
+        asgore: [
+            "НЕ ТВОЯ\n ВИНА"
+        ],
+        berdli: [
+            "nahui  "
+        ],
+        susie: [
+            "ДРАКОНИЙ ПОДЖИГАТЕЛЬ "
+        ],
+        alphys: [
+            "БЫВШАЯ КОЛЛЕГА"
+        ],
+        jakeinstein: [
+            "СТРАХ ТЕМНОТЫ"
+        ],
+        task: [
+            "ХАОС\n ПОРЯДОК\n СТОЛПОТВОРЕНИЕ \n ВОЙНА"
+        ],
+        eram: [
+            "БЕЗ ИГРЫ\n НОЖ ЗАТУПЛЯЕТСЯ "
+        ],
+        aqua: [
+            "ВЫЖИДАЯ МОМЕНТ\n ДЛЯ УДАРА\n ТЫ НЕ ЗАМЕТИЛА КАК\n К ТЕБЕ ПОДКРАЛИСЬ\n ПОЗАДИ"
+        ],
+        noelle: [
+            "ОНА БЫЛА\n ИСПОЛЬЗОВАНА "
+        ],
+        kris: [
+            "ТЫ НЕ \n ДОЛЖЕН БЫЛ\n СТАТЬ ЧАСТЬЮ\n ЭКСПЕРИМЕНТА "
+        ],
+        dess: [
+            "ВО ТЬМЕ \n С ТОБОЮ\n Я"
+        ],
+        friend: [
+            "СКОЛЬКО НЕ ПРЯЧЬСЯ\n ОНИ ВСЕГДА БУДУТ\n В ТЕНИ"
+        ]
+      
+        };
+
+        const fallback = [
+            "ИНТЕРЕСНО",
+            "ОЧЕНЬ ИНТЕРЕСНО",
+            "ЭТО МОЖЕТ БЫТЬ ИНТЕРЕСНЫМ ЭКСПЕРИМЕНТОМ"
+        ];
+
+        const storyWords = [
+            "сноугрейв",
+            "странный",
+            "ангел",
+            "пророчество"
+        ];
+
+
+
+        function random(arr){
+            return arr[Math.floor(Math.random()*arr.length)];
+        }
+
+
+        let screamerTimeout;
+        let musicFadeInterval;
+
+        function triggerScreamer(screamer) {
+            const screen = document.getElementById("screamer");
+            const img = screen.querySelector("img");
+            clearTimeout(screamerTimeout);
+
+            img.src = screamer.image;
+            screen.style.display = "flex";
+
+            const sound = new Audio(screamer.sound);
+            sound.play().catch(() => {});
+
+            screamerTimeout = setTimeout(() => {
+                screen.style.display = "none";
+                sound.pause();
+                sound.currentTime = 0;
+                location.reload();
+            }, screamer.duration);    
+        }
+        
+        
+
+        function stopBackgroundMusic() {
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
+        }
+
+
+
+
+
+        function setResponse(text){
+            const box = document.getElementById("answer");
+            box.classList.add("hidden");
+            setTimeout(() => {
+                box.textContent = text;
+                box.classList.remove("hidden");
+            }, 500);
+        }
+ 
+
+        function getResponse(text){
+            const msg = text.toLowerCase();
+
+            
+
+            if(msg.includes("кто ты") || msg.includes("твоё имя") || msg.includes("что ты")){
+                return random(responces.identity);
+            }
+
+            if(msg.includes("где")){
+                return random(responces.location);
+            }
+
+
+            if(msg.includes("смерть") || msg.includes("мёртв") || msg.includes("мертва") || msg.includes("умри") ){
+                return random(responces.death);
+            }
+
+            if(msg.includes("=)") ){
+                return random(responces.smile);
+            }
+
+            if(msg.includes("яйцо") || msg.includes("яйца") || msg.includes("дерево") || msg.includes("мужчина") ){
+                return random(responces.forgotten);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            if(msg.includes("королева") || msg.includes("королевы") || msg.includes("Королева") ){
+                return random(responces.queen);
+            }
+
+            if(msg.includes("тенна") || msg.includes("Тенна") || msg.includes("антенна") || msg.includes("мистер Ант Тенна") ){
+                return random(responces.tenna);
+            }
+
+            if(msg.includes("ральзей") || msg.includes("Ральзей") ){
+                return random(responces.ralsei);
+            }
+
+            if(msg.includes("азриель") || msg.includes("Азриель") ){
+                return random(responces.asriel);
+            }
+
+            if(msg.includes("папс") || msg.includes("папирус") ){
+                return random(responces.paps);
+            }
+
+            if(msg.includes("санс") || msg.includes("Санс") ){
+                return random(responces.sans);
+            }
+
+            if(msg.includes("герсон") || msg.includes("супер ниндзя черепашка") ){
+                return random(responces.gerson);
+            }
+
+            if(msg.includes("сэмми") || msg.includes("дедушка сэмми") ){
+                return random(responces.sammi);
+            }
+
+            if(msg.includes("король") || msg.includes("король пик") || msg.includes("пиковый король") ){
+                return random(responces.king);
+            }
+
+
+            if(msg.includes("азгор") || msg.includes("король цветов") || msg.includes("цветочный король") ){
+                return random(responces.asgore);
+            }
+
+            if(msg.includes("бёрдли") || msg.includes("наггетс") ){
+                return random(responces.berdli);
+            }
+
+            if(msg.includes("сьюзи") || msg.includes("сьюзилла") ){
+                return random(responces.susie);
+            }
+
+            if(msg.includes("альфис") || msg.includes("доктор альфис") ){
+                return random(responces.alphys);
+            }
+
+            if(msg.includes("джекинштейн") || msg.includes("Джекинштейн") ){
+                return random(responces.jakeinstein);
+            }
+
+            if(msg.includes("таск") || msg.includes("таск меннеджер") || msg.includes("Таск-Меннеджер") ){
+                return random(responces.task);
+            }
+
+            if(msg.includes("эрам") || msg.includes("ерам") ){
+                return random(responces.eram);
+            }
+
+            if(msg.includes("аква") || msg.includes("голубая") ){
+                return random(responces.aqua);
+            }
+
+            if(msg.includes("ноэлль") || msg.includes("Ноэлль Холидей")){
+                return random(responces.noelle);
+            }
+
+            if(msg.includes("крис") ){
+                return random(responces.kris);
+            }
+
+            if(msg.includes("дэсс") || msg.includes("десс холлидей")){
+                return random(responces.dess);
+            }
+
+            if(msg.includes("друг") || msg.includes("майк")){
+                return random(responces.friend);
+            }
+
+
+            for(let word of storyWords){
+                if(msg.includes(word)){
+
+                    stage++;
+                    if(word === "сноугрейв"){
+                        return "Да, сноугрейв"
+                    }
+
+                    if(word === "ангел"){
+                        return "крыльями хлоп хлоп"
+                    }
+
+                    if(word === "пророчество"){
+                        return "прописал"
+                    }
+
+                    return "НЕ ЗАБЫВАЮ..";
+
+                }
+            }
+
+            return random(fallback);
+
+        }
+
+
+
+        function processInput(){
+            const input = document.getElementById("question");
+            const value = input.value.trim();
+
+            if(!value){
+                return;
+            }
+
+            const msg = value.toLowerCase();
+
+            const matchedScreamer = screamers.find(screamer => 
+                screamer.words.some(word => msg.includes(word))
+            );
+
+            input.disabled = true;
+            input.value = "";
+
+            const delay = Math.random() * 2500 + 1000;
+
+            setTimeout(async () => {
+                if(matchedScreamer) {
+                    stopBackgroundMusic();
+                    triggerScreamer(matchedScreamer);
+                } else {
+                    const responce = getResponse(value);
+                    setResponse(responce);
+                }
+
+                input.disabled = false;
+                input.focus();
+                
+            }, delay);
+        }
+
+        document.getElementById("question").addEventListener("keydown", function(e){
+            if(e.key === "Enter"){
+                processInput();
+            }
+        });
+
+        document.getElementById("ansButton").addEventListener("click", processInput);
+        
+        </script>
+
+    
+</body>
+</html>
+
+
+
