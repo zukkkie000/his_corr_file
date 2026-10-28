@@ -271,7 +271,7 @@
         location: [
             "ТЕМНО И ЕЩЁ ТЕМНЕЕ",
             "ВСЮДУ\n И НИГДЕ\n ОДНОВРЕМЕННО.",
-            "ОТЯГОЩАЮЩЕ."
+
         ],
 
         death: [
@@ -307,6 +307,49 @@
         forgotten: [
             "ПРОБЛЕМА"
         ],
+
+        sword_way: [
+            "ПУТЬ, ЧТО ОСТАЛСЯ ЧЕРНОВИКОМ"
+        ],
+
+        roar_knight: [
+            "ВРАГ ИЛИ СОЮЗНИК. НА ТОЙ ЛИ СТОРОНЕ?"
+        ],
+
+        roaring: [
+            "ПРЕКРАСНОЕ ОЛИЦЕТВОРЕНИЕ\n НЕИЗБЕЖНОГО "
+        ],
+
+        titan: [
+            "ЗВЕРЬ НА ЦЕПИ\nСУДЬБЫ"
+
+        ],
+
+        green: [
+            "ФИОЛЕТОВЫЙ",
+            "ХВАТИТ\nН-ТАЙМ"
+        ],
+
+        bunker: [
+            "НОВЫЙ ДОМ.\n НАДЁЖЕН ЛИ?"
+        ],
+
+        hometown: [
+            "ТРЕБУЕТ ПЕРЕЗАПИСИ"
+        ],
+
+        fontaine: [
+            "КЛЮЧ К ИСТИННОЙ КОНЦОВКЕ"
+        ],
+
+        glubini: [
+            "ИСТИННЫЙ ОБЛИК МИРА"
+        ],
+
+        darkness: [
+            "ЭТО ТВОЙ ЛУЧШИЙ ДРУГ"
+        ],
+
 
 
 
@@ -385,12 +428,12 @@
         const fallback = [
             "ИНТЕРЕСНО",
             "ОЧЕНЬ ИНТЕРЕСНО",
-            "ЭТО МОЖЕТ БЫТЬ ИНТЕРЕСНЫМ ЭКСПЕРИМЕНТОМ"
+            "ЭТО МОЖЕТ БЫТЬ ИНТЕРЕСНЫМ ЭКСПЕРИМЕНТОМ",
+            "ХМ"
         ];
 
         const storyWords = [
             "сноугрейв",
-            "странный",
             "ангел",
             "пророчество"
         ];
@@ -454,7 +497,7 @@
                 return random(responces.identity);
             }
 
-            if(msg.includes("где")){
+            if(msg.includes("где ты")){
                 return random(responces.location);
             }
 
@@ -471,10 +514,65 @@
                 return random(responces.forgotten);
             }
 
+            if(msg.includes("сайд б") || msg.includes("сторона б") || msg.includes("сторона b") || msg.includes("side b") ){
+                return random(responces.sideb);
+            }
 
+            if(msg.includes("доходяга") || msg.includes("гонер")  ){
+                return random(responces.dohodiaga);
+            }
 
+            if(msg.includes("бомба") || msg.includes("ядерка")  ){
+                return random(responces.nuc);
+            }
 
+            if(msg.includes("ты существуешь") || msg.includes("существуешь")  ){
+                return random(responces.gas_exist);
+            }
 
+            if(msg.includes("существуем") || msg.includes("существует")  ){
+                return random(responces.we_exist);
+            }
+
+            if(msg.includes("путь меча")  ){
+                return random(responces.sword_way);
+            }
+
+            if(msg.includes("рыцарь") || msg.includes("рокочущий рыцарь")  ){
+                return random(responces.roar_knight);
+            } 
+
+            if(msg.includes("конец") || msg.includes("рокот")  ){
+                return random(responces.roaring);
+            } 
+
+            if(msg.includes("титан")  ){
+                return random(responces.titan);
+            } 
+
+            if(msg.includes("зелёный") || msg.includes("зел")  ){
+                return random(responces.green);
+            }
+
+            if(msg.includes("бункер") || msg.includes("подвал")  ){
+                return random(responces.bunker);
+            }
+
+            if(msg.includes("хоумтаун") || msg.includes("город")  ){
+                return random(responces.hometown);
+            }
+
+            if(msg.includes("фонтан") || msg.includes("тёмный фонтан")  ){
+                return random(responces.fontaine);
+            }
+
+            if(msg.includes("глубины") ){
+                return random(responces.glubini);
+            }
+
+            if(msg.includes("тьма") || msg.includes("темнота")  ){
+                return random(responces.darkness);
+            }
 
 
 
@@ -578,15 +676,15 @@
 
                     stage++;
                     if(word === "сноугрейв"){
-                        return "Да, сноугрейв"
+                        return "ИНТЕРЕСНЫЙ\nОЧЕНЬ ИНТЕРЕСНЫЙ \nНО ПОСРЕДСТВЕННЫЙ \nИСХОД"
                     }
 
                     if(word === "ангел"){
-                        return "крыльями хлоп хлоп"
+                        return "МЫ\nПОДКЛЮЧЕНЫ?"
                     }
 
                     if(word === "пророчество"){
-                        return "прописал"
+                        return "НАПИСАНО ВНЕ ВРЕМЕНИ\nВНЕ ПРОСТРАНСТВА\nНО СТОЛЬ СИЛЬНО\nЧТО НИКТО НЕ МОЖЕТ ПОЙТИ \nПРОТИВ ЕЕ РЕШИМОСТИ"
                     }
 
                     return "НЕ ЗАБЫВАЮ..";
